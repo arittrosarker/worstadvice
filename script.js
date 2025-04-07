@@ -1,5 +1,5 @@
 // Set the API endpoint to your Vercel serverless function URL
-const API_ENDPOINT = "https://worstadvice.vercel.app/api/openrouter";
+const API_ENDPOINT = "https://worstadvice-gjvo6b50g-arittrosarkers-projects.vercel.app/api/openrouter";
 
 const adviceForm = document.getElementById("adviceForm");
 const userInput = document.getElementById("userInput");
@@ -11,7 +11,7 @@ const loveItBtn = document.getElementById("loveItBtn");
 
 let currentPrompt = "";
 
-// Typewriter effect to display text
+// Typewriter effect to display text gradually
 function typeWriter(text, element, index = 0) {
   if (index < text.length) {
     element.innerHTML += text.charAt(index);
@@ -31,7 +31,6 @@ async function fetchAdvice(prompt) {
       headers: {
         "Content-Type": "application/json"
       },
-      // Send only the prompt to your serverless function
       body: JSON.stringify({ prompt })
     });
 
@@ -54,7 +53,7 @@ async function fetchAdvice(prompt) {
   }
 }
 
-// Display advice with typewriter effect
+// Display advice with a typewriter effect
 function displayAdvice(text) {
   loadingDiv.classList.add("hidden");
   resultCard.classList.remove("hidden");
@@ -68,7 +67,7 @@ adviceForm.addEventListener("submit", function(e) {
   const prompt = userInput.value.trim();
   if (!prompt) return;
 
-  // Enforce 25-word limit
+  // Enforce a 25-word limit
   const wordCount = prompt.split(/\s+/).length;
   if (wordCount > 25) {
     alert("Please limit your problem to 25 words.");
@@ -79,7 +78,7 @@ adviceForm.addEventListener("submit", function(e) {
   fetchAdvice(prompt);
 });
 
-// "Get Another Advice" button re-fetches with the stored prompt
+// "Get Another Advice" button to re-fetch with the same prompt
 anotherBtn.addEventListener("click", function(e) {
   e.preventDefault();
   if (currentPrompt) {
