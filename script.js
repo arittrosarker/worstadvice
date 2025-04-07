@@ -1,18 +1,5 @@
-// Add your OpenRouter API keys below
-const OPENROUTER_API_KEYS = [
-  "https://worstadvice.vercel.app/api/openrouter"
-  // Add more keys if needed
-];
-let currentKeyIndex = 0;
-
-// Rotate through multiple API keys
-function getApiKey() {
-  const key = OPENROUTER_API_KEYS[currentKeyIndex];
-  currentKeyIndex = (currentKeyIndex + 1) % OPENROUTER_API_KEYS.length;
-  return key;
-}
-
-const API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
+// Set the API endpoint to your Vercel serverless function URL
+const API_ENDPOINT = "https://worstadvice.vercel.app/api/openrouter";
 
 const adviceForm = document.getElementById("adviceForm");
 const userInput = document.getElementById("userInput");
@@ -24,7 +11,7 @@ const loveItBtn = document.getElementById("loveItBtn");
 
 let currentPrompt = "";
 
-// Typewriter effect
+// Typewriter effect to display text
 function typeWriter(text, element, index = 0) {
   if (index < text.length) {
     element.innerHTML += text.charAt(index);
@@ -32,38 +19,20 @@ function typeWriter(text, element, index = 0) {
   }
 }
 
-// Fetch advice from OpenRouter
+// Fetch advice from your Vercel serverless function
 async function fetchAdvice(prompt) {
   loadingDiv.classList.remove("hidden");
   resultCard.classList.add("hidden");
   adviceTextDiv.innerHTML = "";
 
-  // Stricter system prompt for 2 lines
-  const payload = {
-    model: "openai/gpt-3.5-turbo",
-    max_tokens: 60,  // limit tokens to keep responses short
-    messages: [
-      {
-        role: "system",
-        content: 
-          "You are a terrible advice giver. Respond with the worst, most sarcastic, and hilariously unhelpful advice. " +
-          "Write EXACTLY two lines, each line no more than 15 words. Keep it snappy, absurd, and loosely related."
-      },
-      {
-        role: "user",
-        content: prompt
-      }
-    ]
-  };
-
   try {
     const response = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + getApiKey()
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload)
+      // Send only the prompt to your serverless function
+      body: JSON.stringify({ prompt })
     });
 
     if (!response.ok) {
@@ -71,7 +40,10 @@ async function fetchAdvice(prompt) {
     }
 
     const data = await response.json();
-    const advice = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
+    const advice = data.choices &&
+                   data.choices[0] &&
+                   data.choices[0].message &&
+                   data.choices[0].message.content
       ? data.choices[0].message.content.trim()
       : "Error: No advice found.";
     displayAdvice(advice);
@@ -107,11 +79,10 @@ adviceForm.addEventListener("submit", function(e) {
   fetchAdvice(prompt);
 });
 
-// "Get Another Advice" re-fetches with the same stored prompt
+// "Get Another Advice" button re-fetches with the stored prompt
 anotherBtn.addEventListener("click", function(e) {
   e.preventDefault();
   if (currentPrompt) {
-    // Restore the prompt in the text area before fetching advice again
     userInput.value = currentPrompt;
     fetchAdvice(currentPrompt);
   }
