@@ -1,6 +1,6 @@
 // Add your OpenRouter API keys below
 const OPENROUTER_API_KEYS = [
-  ""
+  "https://worstadvice.vercel.app/api/openrouter"
   // Add more keys if needed
 ];
 let currentKeyIndex = 0;
