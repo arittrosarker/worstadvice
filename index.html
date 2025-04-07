@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Worst Advice Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Worst Advice Generator</h1>
+    <p class="tagline">Welcome to your last resort for help.</p>
+    <p class="explanation">Type your problem. Receive the dumbest advice possible.</p>
+
+    <form id="adviceForm">
+      <textarea id="userInput" placeholder="Type your problem here (max 25 words)..." maxlength="150" required></textarea>
+      <br />
+      <button type="submit" id="submitBtn">Give Me the Worst Advice</button>
+    </form>
+
+    <div id="loading" class="hidden">Loading...</div>
+
+    <div id="resultCard" class="hidden">
+      <div id="adviceText" style="min-height: 80px;"></div>
+      <div class="buttons">
+        <button id="anotherBtn">Get Another Advice</button>
+        <button id="loveItBtn">❤️ This is terrible, I love it</button>
+      </div>
+    </div>
+
+    <footer>
+      <p>This is satire. Do NOT follow this advice.</p>
+      <p>Created by Arittro Sarker</p>
+    </footer>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
